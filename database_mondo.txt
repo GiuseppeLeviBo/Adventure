@@ -6,13 +6,21 @@ Non inventare stanze o collegamenti fuori da questa lista.
 
 - Atmosfera: Nebbia fitta, inferriate contorte, pioggia sottile.
 
-- Uscite: NORD -> [Giardino Nebbioso]
+- Uscite: NORD -> [Giardino Nebbioso],EST -> [Palude Fangosa]
 
 - Oggetti: Cassetta delle lettere chiusa agganciata al cancello. La cassetta delle lettere non s può prendere ma si puo aprire.
 Quando aperta rivela una Lettera. la Lettera si può prendere. 
 Se viene letta (solo dopo essere stata trovata) rivela un messaggio di benvenuto:
 "Benvenuto Giocatore, la sorte ti ha portato in questo luogo. Un aiuto sarà dato a chi lo chiede. Se lo chiede prima di morire."
 
+[Palude Fangosa]
+- Uscite: NORD -> [Palude Fangosa],EST -> [Palude Fangosa],SUD -> [Palude Fangosa],OVEST -> [Cancello Arrugginito]
+- EVENTO A TEMPO (Sabbie Mobili): 
+  - Se `TURNI IN STANZA` == 1: Aggiungi alla narrazione che l'ambiente ti mette angoscia e oppressione.
+
+  - Se `TURNI IN STANZA` == 2: Aggiungi alla narrazione che stai cominciando ad affondare nella palude.
+
+  - Se `TURNI IN STANZA` >= 3: Aggiungi alla narrazione che affondi sempre più nella palude. SALUTE -10  
 
 [Capanno Marcescente]
 
@@ -27,7 +35,7 @@ Se viene letta (solo dopo essere stata trovata) rivela un messaggio di benvenuto
 
 [Giardino Nebbioso]
 
-- Atmosfera: Statue decapitate coperte di edera.
+- Atmosfera: Statue coperte di edera. Sono inquietanti e sembrano figure di persone improvvisamente tramutate in pietra.
 
 - Uscite: SUD -> [Cancello Arrugginito], EST -> [Capanno Marcescente], NORD -> [Maniero] (Il Maniero è chiuso a chiave per ora si apre con la "Chiave di Ferro").
 
