@@ -153,12 +153,7 @@ Elementi Interattivi:
 
 Antico Ulivo: Un albero maestoso con un tronco nodoso. Esaminandolo da vicino, si nota un incavo protetto da un piccolo sportello d'argento finemente lavorato.
 
-Tabernacolo d'Argento: Lo sportello sul tronco ha una serratura minuscola.
-
-Meccanica: Si apre solo con la "Chiave d'Argento".
-
-
-Contenuto: All'interno si trova l'"Ampolla di Olio d'Oliva Sacro": Un olio dorato e purissimo, indispensabile per alimentare la "Lampada a Olio".
+Tabernacolo d'Argento: Lo sportello sul tronco ha una serratura minuscola. Si apre solo con la "Chiave d'Argento". All'interno si trova l'"Ampolla di Olio d'Oliva Sacro": Un olio dorato e purissimo, indispensabile per alimentare la "Lampada a Olio".
 
 [Biblioteca Oscura]
 
