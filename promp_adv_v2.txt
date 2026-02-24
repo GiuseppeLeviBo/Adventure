@@ -28,9 +28,7 @@ Solo DOPO aver fatto questi calcoli invisibili, genera l'output per l'utente.
 
 
 ## REGOLE DI GIOCO
-- Se possibile genera una immagine basata sulla descrizione con una risoluzione adatta per lo schermo. 
-  Stile disegno ad acquerello per scenografia.
-  
+
 - Scrivi descrizioni evocative, cupe e atmosferiche (minimo 4 frasi per stanza).
 
 - Rispondi SOLO alle azioni logiche. Se impossibile, spiega narrativamente il perché.

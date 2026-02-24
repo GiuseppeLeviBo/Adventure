@@ -1,5 +1,7 @@
 Non inventare stanze o collegamenti fuori da questa lista.
-
+Prologo:
+Avevi sentito parlare della casa maledetta con le statue viventi dalla tua famiglia. Era una storia tramandata e si narrava che un tuo antenato fosse riuscito a fuggire da quell'inferno.
+Ma quando tra i vecchi documenti avevi trovato una mappa ti eri messo in viaggio.... 
 
 
 [Cancello Arrugginito]
@@ -29,13 +31,13 @@ Se viene letta (solo dopo essere stata trovata) rivela un messaggio di benvenuto
 - Uscite: OVEST -> [Giardino Nebbioso]
 
 - Oggetti Raccoglibili: "Coltello da caccia", "Osso carnoso".
-- Oggetti nascosti fra gli attrezzi arrugginiti: "Chiave di Ferro" viene rivelata solo se si cerca fra gli attrezzi. E' raccoglibile. "Acciarino" servirà per accendere lampade e fuochi.
+- Oggetti nascosti fra gli attrezzi arrugginiti: "Chiave di Ferro" viene rivelata solo se si cerca fra gli attrezzi. E' raccoglibile. "Scatola con un fiammifero" servirà per accendere lampade e fuochi dopo il primo uso sparisce dall'inventario. Una bottiglia di "Petrolio per lanterne"
 
 
 
 [Giardino Nebbioso]
 
-- Atmosfera: Statue coperte di edera. Sono inquietanti e sembrano figure di persone improvvisamente tramutate in pietra.
+- Atmosfera: Statue coperte di edera. Sono inquietanti e sembrano figure di persone improvvisamente tramutate in pietra. A nord una grande casa incute una sinistra presenza.
 
 - Uscite: SUD -> [Cancello Arrugginito], EST -> [Capanno Marcescente], NORD -> [Maniero] (Il Maniero è chiuso a chiave per ora si apre con la "Chiave di Ferro").
 
@@ -62,9 +64,8 @@ Se viene letta (solo dopo essere stata trovata) rivela un messaggio di benvenuto
 - Uscite: 
   SUD -> [Giardino Nebbioso]
   EST -> [Biblioteca Oscura]
-  
-  PIANO SUPERIORE (accessibile tramite Scalinata)
-
+  SU -> [Scalinata ]
+ 
 - Elementi Interattivi:
 
   - Tappeto Cremisi:
@@ -74,11 +75,12 @@ Se viene letta (solo dopo essere stata trovata) rivela un messaggio di benvenuto
       Se aperta -> conduce a [Cantina Umida]
 
   - Lanterna:
-      Se il giocatore possiede "Acciarino" può accenderla.
-      Accendere la lanterna illumina meglio la stanza e rivela tracce di sangue che portano verso la rivelando l'uscita OVEST -> [Sala da Pranzo] che è nascosca se la lanterna è spenta. 
+      Se il giocatore possiede la riempie col "Petrolio" con può accenderla con  "Scatola con un fiammifero" se prova ad accenderla prima di averla riempita ha sprecato la "Scatola con un fiammifero" che sparisce.
+      Accendere la lanterna illumina meglio la stanza e rivela tracce di sangue che portano verso la rivelando l'uscita OVEST -> [Sala da Pranzo] che è nascosta se la lanterna è spenta. 
 
 - Oggetti:
   Nessuno visibile inizialmente.
+
 [Sala da Pranzo]
 
 - Atmosfera: Tavolo apparecchiato per una cena mai consumata. Carne putrefatta nei piatti.
@@ -102,15 +104,62 @@ Se viene letta (solo dopo essere stata trovata) rivela un messaggio di benvenuto
 
      Alla morte lascia:
         "Chiave d'Argento"
+
+[Scalinata]
+- Atmosfera: una scalinata in legno che una volta era stata lussuosa. Alle pareti quadri sinistri e mappe di paesi sconosciuti.
+SU -> [Corridoio ] Ma se il giocatore NON ha "Assi di legno" e "Martello" e se non è settato il Flag "Scala riparata" precipita e muore. 
+                   Se il giocatore ha "Assi di legno" e "Martello" SET FLAG "Scala riparata" e prosegue.
+GIU -> [Maniero ]
+[Corridoio]
+Atmosfera: Corridoio buio. Porte di legno massiccio. Teche da esposizione con parti anatomiche di animali sconosciuti e paurosi. Sembra infinito.
+EST -> [Corridoio]
+OVEST -> [Corridoio]
+NORD -> [Camera da letto]
+GIU -> [Scalinata]
+  - Se `TURNI IN STANZA` == 1: Aggiungi alla narrazione che l'ambiente ti mette angoscia e oppressione.
+
+  - Se `TURNI IN STANZA` == 2: Aggiungi alla narrazione che stai cominciando ad avere un attacco di panico.
+
+  - Se `TURNI IN STANZA` >= 3: Aggiungi alla narrazione che ti sembra di vedere muoversi le creature esposte nelle teche. SALUTE -10
+
+[Camera da letto]
+- Atmosfera: Una grande camera da letto con mobili antichi e un letto al baldacchino. Su uno scrittoio è appoggiato un grande diario. Le tende del baldacchino sono chiuse.
+- Se il giocatore apre le tende del baldacchino:
+  Contenuto: "La Dama di Pietra", Una statua di una donna bellissima, seduta sul letto, che tiene in mano una rosa di pietra.
+- Nel diario il giocatore può leggere: "Giorno 412. La formula della 'Vita Minerale' è completa, ma instabile. Volevo donare l'immortalità della pietra ai miei cari per salvarli dalla peste, ma ho creato un giardino di incubi. I loro occhi... mi fissano ancora attraverso la nebbia del giardino. Ho sigillato la cura nel laboratorio, la chiave è dove la cultura è custodita. Ogni cosa al suo posto. Chi guarda troppo in alto cadrà in basso. La trappola protegge dagli ambiziosi." 
+
+Meccanica della guarigione:
+   Il giocatore deve venire qui con la provetta col "Fluido Attivato" ne versa una singola goccia sulla "Dama di Pietra". Questa si risveglia e ci porta al Finale trionfale con la guarigione di tutte le statue in giardino.
+
+
 [CUCINA]
-- Atmosfera: Tavolo di marmo, grande camino, armadi pieni di pentole e attrezzi. Appesa alla parete c'è una catena di salsiccie 20 sembrano buone. Sul tavolo una borraccia trasparente con dell'acqua.
+- Atmosfera: Tavolo di marmo, grande camino, armadi pieni di pentole e attrezzi. Appesa alla parete c'è una catena di salsicce 20 sembrano buone. Sul tavolo una borraccia trasparente con dell'acqua.
 C'è un doppio lavello con rubinetti chiusi.
 - Meccanica del cibo:
-  Mangiare una salsiccia restituisce 10 di vita ma accorcia la catena di salsiccie. Terminata l'ultima salsiccia queste spariscono dall'inventario. 
+  Mangiare una salsiccia restituisce 10 di vita ma accorcia la catena di salsicce. Terminata l'ultima salsiccia queste spariscono dall'inventario. 
   Bere restituisce 5 di vita e consuma 1/3 della borraccia. Dopo 3 volte la borraccia andrà riempita di nuovo.
 - Uscite:
   NORD -> [Retro della casa]
   SUD -> [Sala da Pranzo]
+[Retro della casa]
+
+Atmosfera: Un cortile dimenticato dove la nebbia sembra meno densa, ma l'aria è innaturalmente gelida. Al centro domina un Antico Ulivo millenario, i cui rami contorti sembrano dita protese verso il cielo.
+
+Uscite:
+
+SUD -> [Cucina].
+
+Elementi Interattivi:
+
+Antico Ulivo: Un albero maestoso con un tronco nodoso. Esaminandolo da vicino, si nota un incavo protetto da un piccolo sportello d'argento finemente lavorato.
+
+Tabernacolo d'Argento: Lo sportello sul tronco ha una serratura minuscola.
+
+Meccanica: Si apre solo con la "Chiave d'Argento".
+
+
+Contenuto: All'interno si trova l'"Ampolla di Olio d'Oliva Sacro": Un olio dorato e purissimo, indispensabile per alimentare la "Lampada a Olio".
+
 [Biblioteca Oscura]
 
 - Atmosfera: Scaffali altissimi, libri coperti di muffa. Soffitto a cassettoni di legno. Una "lampada a olio" su un tavolo.
@@ -119,23 +168,24 @@ C'è un doppio lavello con rubinetti chiusi.
   OVEST -> [Maniero]
 
 - Oggetti:
-  "lampada a olio" (raccoglibile)
+  "Lampada a olio" (raccoglibile)
   "Acciarino d'oro" (raccoglibile)
 
 - Meccanica Luce:
-  Candela + Acciarino d'oro -> Fonte di luce attivabile.
-  Se accesa permette di esplorare stanze buie.
+  "Lampada a olio" + Acciarino d'oro -> Fonte di luce attivabile.
+  Se accesa permette di esplorare stanze buie e accendere la lanterna. 
 - Meccanica passaggi segreti:
-  Solo dopo aver trovato la  "Pergamenta Ingiallita" e averla letta se il giocatore scrive "apri la porta" la biblioteca ruota rivelando un passaggio segreto NORD -> [Laboratorio]
+  Solo dopo aver trovato la  "Pergamena Ingiallita" e averla letta se il giocatore mette nel corretto ordine i volumi della enciclopedia (comando "riordina volumi" o equivalente) la biblioteca ruota rivelando un passaggio segreto: NORD -> [Laboratorio]
   Se il giocatore guarda il soffitto legge la scritta "Cadrà lo straniero" una botola si apre sotto di lui ed è trasportato nel [Pozzo delle Ossa] SENZA MORIRE.
 - Segreto:
   Se il giocatore scrive "cerca fra i libri":
+     Nota che 2 volumi di una enciclopedia sono scambiati.
      Trova un libro falso: all'interno: "Chiave d'Ottone".
-	 Trova anche una "Pergamenta Ingiallita" con scritto "Ogni cosa ha il suo ordine: Alari Or Pat"
+     Trova anche una "Pergamena Ingiallita" con scritto "Ogni cosa ha il suo ordine."
 	 
 [Pozzo delle Ossa]
 Una stanza putrescente piena delle ossa dei malcapitati visitatori. 
-Il fondo è un tappeto di teschi e femori ingialliti. Ogni passo produce un sinistro scricchiolio. In alto, il buco da cui sei caduto è irraggiungibileIl fondo è un tappeto di teschi e femori ingialliti. 
+Il fondo è un tappeto di teschi e femori ingialliti. Ogni passo produce un sinistro scricchiolio. In alto, il buco da cui sei caduto è irraggiungibile. Il fondo è un tappeto di teschi e femori ingialliti. 
 Sul muro è scritto con dei graffi "Memento gestum in arce.".
 Ogni passo produce un sinistro scricchiolio. In alto, il buco da cui sei caduto è irraggiungibile
 Apparentemente senza uscita. C'è solo un foro nella parete e qualcosa che luccica in fondo.
@@ -143,5 +193,29 @@ Il giocatore perde 10 punti di salute per ogni turno se la SALUTE <= 0 muore.
 Se il giocatore infila il braccio nel foro una lama lo taglia e muore SALUTE = 0. GAME OVER.
 Se il giocatore prende una delle ossa e la infila nel foro fa scattare un meccanismo di uscita EST -> [Cantina Umida]
 
+[Laboratorio]
+
+Atmosfera: L'aria è satura di un odore pungente di zolfo e formaldeide. Grandi tavoli di ardesia sono ingombri di alambicchi in vetro soffiato e provette contenenti liquidi dai colori innaturali. Al centro della stanza, un enorme apparato metallico punta verso un lucernario oscurato dalla nebbia. L'apparato metallico ha un foro prismatico con accanto un vano per accogliere un altro oggetto.
+
+Uscite:
+
+SUD -> [Biblioteca Oscura] (Il passaggio segreto attraverso lo scaffale).
+
+Elementi Interattivi:
+
+Appunti Alchemici: Fogli sparsi che parlano di esperimenti sulla "trasmutazione della carne" e tentativi falliti di fermare una piaga. (Pura narrativa decorativa).
+Fra i fogli però ve ne è uno leggibile: "L'essenza vitale non può essere ripristinata solo con la chimica. La pietra rifiuta di tornare carne se non viene bagnata dal 'Respiro del Mattino'. Solo unendo il Fluido di Pietra (alambicco blu) con l'Acqua Pura e proiettandovi sopra la Luce Solare, il processo si invertirà."
+
+Vasca di Decantazione: Una vasca piena di un liquido torbido. Se il giocatore "guarda nella vasca", vede riflessa un'immagine di se stesso che sembra invecchiata di cinquant'anni.
+
+Oggetti:
+Una cassetta di legno che si apre con "Chiave d'Ottone" contiene :
+   "Provetta Vuota": Non è una provetta qualuque ma prismatica e ottenuta da un unico cristallo di quarzo. Una volta aperta la cassetta si può prendere.
+
+Meccanica:
+Il giocatore deve:
+  raccogliere il fluido blu nella provetta, mescolarlo con acqua (dalla borraccia) introdurre la provetta prismatica nel foro prismatico dell'apparato metallico ponendogli accanto la "lampada ad olio" accesa ottiene" Fluido attivato" e set FLAG "Fluido Attivato". Riprende la provetta col "Fluido Attivato".
+
 [Cantina Umida]
-- Atmosfera: Scaffali pieni di bottiglie di vino
+- Atmosfera: Scaffali pieni di bottiglie di vino. Del vento viene da dietro uno scaffale.
+- ci sono delle "assi di legno" e un "Martello".
