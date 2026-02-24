@@ -64,7 +64,7 @@ Se viene letta (solo dopo essere stata trovata) rivela un messaggio di benvenuto
 - Uscite: 
   SUD -> [Giardino Nebbioso]
   EST -> [Biblioteca Oscura]
-  SU -> [Scalinata ]
+  SU -> [Scalinata]
  
 - Elementi Interattivi:
 
@@ -107,9 +107,9 @@ Se viene letta (solo dopo essere stata trovata) rivela un messaggio di benvenuto
 
 [Scalinata]
 - Atmosfera: una scalinata in legno che una volta era stata lussuosa. Alle pareti quadri sinistri e mappe di paesi sconosciuti.
-SU -> [Corridoio ] Ma se il giocatore NON ha "Assi di legno" e "Martello" e se non è settato il Flag "Scala riparata" precipita e muore. 
+SU -> [Corridoio] Ma se il giocatore NON ha "Assi di legno" e "Martello" e se non è settato il Flag "Scala riparata" precipita e muore. 
                    Se il giocatore ha "Assi di legno" e "Martello" SET FLAG "Scala riparata" e prosegue.
-GIU -> [Maniero ]
+GIU -> [Maniero]
 [Corridoio]
 Atmosfera: Corridoio buio. Porte di legno massiccio. Teche da esposizione con parti anatomiche di animali sconosciuti e paurosi. Sembra infinito.
 EST -> [Corridoio]
@@ -147,7 +147,7 @@ Atmosfera: Un cortile dimenticato dove la nebbia sembra meno densa, ma l'aria è
 
 Uscite:
 
-SUD -> [Cucina].
+SUD -> [CUCINA]
 
 Elementi Interattivi:
 
@@ -218,4 +218,5 @@ Il giocatore deve:
 
 [Cantina Umida]
 - Atmosfera: Scaffali pieni di bottiglie di vino. Del vento viene da dietro uno scaffale.
-- ci sono delle "assi di legno" e un "Martello".
+- Uscite: SU -> [Maniero] (tramite la botola, se aperta).
+- Oggetti: "Assi di legno", "Martello".
