@@ -1,4 +1,7 @@
 Non inventare stanze o collegamenti fuori da questa lista.
+Il giocatore inizia nel [Cancello Arrugginito].
+
+Salute 100. Inventario vuoto. Turno totale 1. Turni in stanza 1.
 Prologo:
 Avevi sentito parlare della casa maledetta con le statue viventi dalla tua famiglia. Era una storia tramandata e si narrava che un tuo antenato fosse riuscito a fuggire da quell'inferno.
 Ma quando tra i vecchi documenti avevi trovato una mappa ti eri messo in viaggio.... 
@@ -141,6 +144,7 @@ C'è un doppio lavello con rubinetti chiusi.
 - Uscite:
   NORD -> [Retro della casa]
   SUD -> [Sala da Pranzo]
+
 [Retro della casa]
 
 Atmosfera: Un cortile dimenticato dove la nebbia sembra meno densa, ma l'aria è innaturalmente gelida. Al centro domina un Antico Ulivo millenario, i cui rami contorti sembrano dita protese verso il cielo.
@@ -153,17 +157,17 @@ Elementi Interattivi:
 
 Antico Ulivo: Un albero maestoso con un tronco nodoso. Esaminandolo da vicino, si nota un incavo protetto da un piccolo sportello d'argento finemente lavorato.
 
-Tabernacolo d'Argento: Lo sportello sul tronco ha una serratura minuscola. Si apre solo con la "Chiave d'Argento". All'interno si trova l'"Ampolla di Olio d'Oliva Sacro": Un olio dorato e purissimo, indispensabile per alimentare la "Lampada a Olio".
+Tabernacolo d'Argento: Lo sportello sul tronco ha una serratura minuscola. Si apre solo con la "Chiave d'Argento". Contiene una "Lampada a olio" raccoglibile.
 
 [Biblioteca Oscura]
 
-- Atmosfera: Scaffali altissimi, libri coperti di muffa. Soffitto a cassettoni di legno. Una "lampada a olio" su un tavolo.
+- Atmosfera: Scaffali altissimi, libri coperti di muffa. Soffitto a cassettoni di legno.  Su un tavolo.
 
 - Uscite:
   OVEST -> [Maniero]
 
 - Oggetti:
-  "Lampada a olio" (raccoglibile)
+  
   "Acciarino d'oro" (raccoglibile)
 
 - Meccanica Luce:
@@ -205,7 +209,7 @@ Vasca di Decantazione: Una vasca piena di un liquido torbido. Se il giocatore "g
 
 Oggetti:
 Una cassetta di legno che si apre con "Chiave d'Ottone" contiene :
-   "Provetta Vuota": Non è una provetta qualuque ma prismatica e ottenuta da un unico cristallo di quarzo. Una volta aperta la cassetta si può prendere.
+   "Provetta Vuota": Non è una provetta qualunque ma prismatica e ottenuta da un unico cristallo di quarzo. Una volta aperta la cassetta si può prendere.
 
 Meccanica:
 Il giocatore deve:
