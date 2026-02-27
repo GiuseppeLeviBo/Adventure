@@ -1,0 +1,497 @@
+[
+  {
+    "nome": "Cancello Arrugginito",
+    "atmosfera": "Nebbia fitta, inferriate contorte, pioggia sottile.",
+    "uscite": [
+      { "direzione": "NORD", "destinazione": "Giardino Nebbioso" },
+      { "direzione": "EST", "destinazione": "Palude Fangosa" }
+    ],
+    "oggetti": {
+      "visibili": [
+        {
+          "nome": "Cassetta delle lettere",
+          "raccoglibile": false,
+          "stato_iniziale": "chiusa",
+          "azioni": [
+            {
+              "tipo": "apri",
+              "effetto": "Rivela la Lettera"
+            }
+          ]
+        }
+      ],
+      "nascosti": [
+        {
+          "nome": "Lettera",
+          "raccoglibile": true,
+          "condizione_rivelazione": "Apertura della Cassetta delle lettere",
+          "azioni": [
+            {
+              "tipo": "leggi",
+              "messaggio": "Benvenuto Giocatore, la sorte ti ha portato in questo luogo. Un aiuto sarà dato a chi lo chiede. Se lo chiede prima di morire."
+            }
+          ]
+        }
+      ]
+    },
+    "eventi": []
+  },
+  {
+    "nome": "Palude Fangosa",
+    "atmosfera": "Palude opprimente e disorientante.",
+    "uscite": [
+      { "direzione": "NORD", "destinazione": "Palude Fangosa" },
+      { "direzione": "EST", "destinazione": "Palude Fangosa" },
+      { "direzione": "SUD", "destinazione": "Palude Fangosa" },
+      { "direzione": "OVEST", "destinazione": "Cancello Arrugginito" }
+    ],
+    "oggetti": { "visibili": [], "nascosti": [] },
+    "eventi": [
+      {
+        "nome": "Sabbie Mobili",
+        "tipo": "a_tempo",
+        "trigger": "turni_in_stanza",
+        "fasi": [
+          {
+            "condizione": "== 1",
+            "effetto_narrativo": "L'ambiente mette angoscia e oppressione."
+          },
+          {
+            "condizione": "== 2",
+            "effetto_narrativo": "Il giocatore comincia ad affondare nella palude."
+          },
+          {
+            "condizione": ">= 3",
+            "effetto_narrativo": "Il giocatore affonda sempre più nella palude.",
+            "effetti_gioco": ["SALUTE -10"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "Capanno Marcescente",
+    "atmosfera": "Odore di legno marcio e sangue secco. Attrezzi arrugginiti.",
+    "uscite": [
+      { "direzione": "OVEST", "destinazione": "Giardino Nebbioso" }
+    ],
+    "oggetti": {
+      "visibili": [
+        { "nome": "Coltello da caccia", "raccoglibile": true },
+        { "nome": "Osso carnoso", "raccoglibile": true }
+      ],
+      "nascosti": [
+        {
+          "nome": "Chiave di Ferro",
+          "raccoglibile": true,
+          "condizione_rivelazione": "Cercare fra gli attrezzi arrugginiti"
+        },
+        {
+          "nome": "Scatola con un fiammifero",
+          "raccoglibile": true,
+          "uso": "Accende lampade/fuochi; dopo il primo uso sparisce dall'inventario"
+        },
+        {
+          "nome": "Petrolio per lanterne",
+          "raccoglibile": true,
+          "condizione_rivelazione": "Cercare fra gli attrezzi arrugginiti"
+        }
+      ]
+    },
+    "eventi": []
+  },
+  {
+    "nome": "Giardino Nebbioso",
+    "atmosfera": "Statue coperte di edera. Figure pietrificate. A nord incombe la casa.",
+    "uscite": [
+      { "direzione": "SUD", "destinazione": "Cancello Arrugginito" },
+      { "direzione": "EST", "destinazione": "Capanno Marcescente" },
+      {
+        "direzione": "NORD",
+        "destinazione": "Maniero",
+        "condizione": "Richiede Chiave di Ferro"
+      }
+    ],
+    "oggetti": { "visibili": [], "nascosti": [] },
+    "eventi": [
+      {
+        "nome": "Il Lupo",
+        "tipo": "a_tempo_condizionale",
+        "condizione_attivazione": "Si attiva solo se NON sono presenti i FLAG 'Lupo Domato' e 'Lupo Morto'",
+        "fasi": [
+          {
+            "condizione": "turni_in_stanza == 1",
+            "effetto_narrativo": "In lontananza si sente l'abbaiare rabbioso di un cane."
+          },
+          {
+            "condizione": "turni_in_stanza == 2",
+            "effetto_narrativo": "Il latrato si avvicina, accompagnato da ringhi gutturali."
+          },
+          {
+            "condizione": "turni_in_stanza >= 3",
+            "effetto_narrativo": "Un Lupo Infernale emerge dalla nebbia e attacca.",
+            "risoluzioni": [
+              {
+                "azione": "Usare/Dare Osso carnoso",
+                "effetti": ["Aggiungi FLAG 'Lupo Domato'", "Rimuovi 'Osso carnoso' dall'inventario"]
+              },
+              {
+                "azione": "Attaccare con Coltello da caccia",
+                "effetti": ["SALUTE -50", "Aggiungi FLAG 'Lupo Morto'"]
+              },
+              {
+                "azione": "Fuggire / combattere a mani nude / assenza oggetti corretti",
+                "effetti": ["SALUTE = 0", "GAME OVER"]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "Maniero",
+    "atmosfera": "Atrio immenso, lanterna spenta, odore di polvere e cera antica.",
+    "uscite": [
+      { "direzione": "SUD", "destinazione": "Giardino Nebbioso" },
+      { "direzione": "EST", "destinazione": "Biblioteca Oscura" },
+      { "direzione": "SU", "destinazione": "Scalinata" },
+      {
+        "direzione": "OVEST",
+        "destinazione": "Sala da Pranzo",
+        "nascosta": true,
+        "condizione_rivelazione": "Accendere la lanterna nel Maniero"
+      },
+      {
+        "direzione": "GIU",
+        "destinazione": "Cantina Umida",
+        "nascosta": true,
+        "condizione": "Botola sotto il tappeto aperta con Chiave di Ferro"
+      }
+    ],
+    "oggetti": { "visibili": [], "nascosti": [] },
+    "eventi": [
+      {
+        "nome": "Tappeto Cremisi e Botola",
+        "tipo": "interazione_condizionale",
+        "trigger": ["sposta tappeto", "guarda sotto tappeto"],
+        "effetti": [
+          "Rivela una botola chiusa",
+          "La botola si apre con Chiave di Ferro",
+          "Se aperta conduce a Cantina Umida"
+        ]
+      },
+      {
+        "nome": "Gestione Lanterna",
+        "tipo": "interazione_condizionale",
+        "regole": [
+          "Serve Petrolio per lanterne per riempirla",
+          "Serve Scatola con un fiammifero per accenderla",
+          "Se si tenta di accenderla senza petrolio, il fiammifero viene consumato",
+          "Lanterna accesa: illumina la stanza e rivela tracce di sangue verso la Sala da Pranzo"
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "Sala da Pranzo",
+    "atmosfera": "Tavolo apparecchiato per una cena mai consumata. Carne putrefatta nei piatti.",
+    "uscite": [
+      { "direzione": "EST", "destinazione": "Maniero" },
+      { "direzione": "NORD", "destinazione": "CUCINA" }
+    ],
+    "oggetti": {
+      "visibili": [
+        {
+          "nome": "Candelabro Pesante",
+          "raccoglibile": true,
+          "uso": "Arma improvvisata, danno medio"
+        }
+      ],
+      "nascosti": []
+    },
+    "eventi": [
+      {
+        "nome": "Servitore Zombi",
+        "tipo": "a_tempo",
+        "fasi": [
+          {
+            "condizione": "Osservare la carne",
+            "effetto_narrativo": "Manca un pezzo… qualcosa sta ancora mangiando."
+          },
+          {
+            "condizione": "Dopo 1 turno",
+            "effetto_narrativo": "Un Servitore Zombi emerge da sotto il tavolo.",
+            "risoluzioni": [
+              {
+                "azione": "Attacco con Coltello da caccia o Candelabro Pesante",
+                "effetti": ["Zombi sconfitto", "Lascia Chiave d'Argento"]
+              },
+              {
+                "azione": "Fuga",
+                "effetti": ["Ritorno al Maniero"]
+              },
+              {
+                "azione": "Combattimento a mani nude",
+                "effetti": ["SALUTE -30 per turno"]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "Scalinata",
+    "atmosfera": "Scalinata di legno un tempo lussuosa, con quadri sinistri e mappe di paesi sconosciuti.",
+    "uscite": [
+      {
+        "direzione": "SU",
+        "destinazione": "Corridoio",
+        "condizione": "Se non ci sono Assi di legno e Martello e non è presente FLAG 'Scala riparata', il giocatore precipita e muore"
+      },
+      {
+        "direzione": "GIU",
+        "destinazione": "Maniero"
+      }
+    ],
+    "oggetti": { "visibili": [], "nascosti": [] },
+    "eventi": [
+      {
+        "nome": "Riparazione Scala",
+        "tipo": "condizionale",
+        "condizione": "Se il giocatore ha Assi di legno e Martello",
+        "effetti": ["SET FLAG 'Scala riparata'", "Prosegue verso Corridoio"]
+      }
+    ]
+  },
+  {
+    "nome": "Corridoio",
+    "atmosfera": "Corridoio buio con teche anatomiche e porte massicce. Sembra infinito.",
+    "uscite": [
+      { "direzione": "EST", "destinazione": "Corridoio" },
+      { "direzione": "OVEST", "destinazione": "Corridoio" },
+      { "direzione": "NORD", "destinazione": "Camera da letto" },
+      { "direzione": "GIU", "destinazione": "Scalinata" }
+    ],
+    "oggetti": { "visibili": [], "nascosti": [] },
+    "eventi": [
+      {
+        "nome": "Panico nel corridoio",
+        "tipo": "a_tempo",
+        "fasi": [
+          {
+            "condizione": "turni_in_stanza == 1",
+            "effetto_narrativo": "L'ambiente mette angoscia e oppressione."
+          },
+          {
+            "condizione": "turni_in_stanza == 2",
+            "effetto_narrativo": "Il giocatore comincia ad avere un attacco di panico."
+          },
+          {
+            "condizione": "turni_in_stanza >= 3",
+            "effetto_narrativo": "Sembra che le creature nelle teche si muovano.",
+            "effetti_gioco": ["SALUTE -10"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "Camera da letto",
+    "atmosfera": "Grande camera con mobili antichi, letto a baldacchino e diario sullo scrittoio.",
+    "uscite": [],
+    "oggetti": {
+      "visibili": [
+        { "nome": "Diario", "raccoglibile": false },
+        { "nome": "Letto a baldacchino", "raccoglibile": false }
+      ],
+      "nascosti": [
+        {
+          "nome": "La Dama di Pietra",
+          "raccoglibile": false,
+          "condizione_rivelazione": "Aprire le tende del baldacchino"
+        }
+      ]
+    },
+    "eventi": [
+      {
+        "nome": "Guarigione finale",
+        "tipo": "condizionale",
+        "condizione": "Usare la provetta con Fluido Attivato sulla Dama di Pietra",
+        "effetti": ["Finale trionfale", "Guarigione di tutte le statue nel giardino"]
+      }
+    ]
+  },
+  {
+    "nome": "CUCINA",
+    "atmosfera": "Tavolo di marmo, camino, armadi pieni, catena di salsicce e borraccia trasparente.",
+    "uscite": [
+      { "direzione": "NORD", "destinazione": "Retro della casa" },
+      { "direzione": "SUD", "destinazione": "Sala da Pranzo" }
+    ],
+    "oggetti": {
+      "visibili": [
+        {
+          "nome": "Catena di salsicce",
+          "quantita_iniziale": 20,
+          "meccanica": "Ogni salsiccia consumata ripristina 10 SALUTE"
+        },
+        {
+          "nome": "Borraccia d'acqua",
+          "usi": 3,
+          "meccanica": "Ogni uso ripristina 5 SALUTE, poi va riempita"
+        }
+      ],
+      "nascosti": []
+    },
+    "eventi": []
+  },
+  {
+    "nome": "Retro della casa",
+    "atmosfera": "Cortile gelido con nebbia rada e un Antico Ulivo millenario.",
+    "uscite": [
+      { "direzione": "SUD", "destinazione": "CUCINA" }
+    ],
+    "oggetti": {
+      "visibili": [
+        { "nome": "Antico Ulivo", "raccoglibile": false }
+      ],
+      "nascosti": [
+        {
+          "nome": "Lampada a olio",
+          "raccoglibile": true,
+          "contenitore": "Tabernacolo d'Argento",
+          "condizione_rivelazione": "Aprire il tabernacolo con Chiave d'Argento"
+        }
+      ]
+    },
+    "eventi": []
+  },
+  {
+    "nome": "Biblioteca Oscura",
+    "atmosfera": "Scaffali altissimi, libri ammuffiti, soffitto a cassettoni.",
+    "uscite": [
+      { "direzione": "OVEST", "destinazione": "Maniero" },
+      {
+        "direzione": "NORD",
+        "destinazione": "Laboratorio",
+        "nascosta": true,
+        "condizione_rivelazione": "Dopo aver letto Pergamena Ingiallita e riordinato i volumi"
+      },
+      {
+        "direzione": "GIU",
+        "destinazione": "Pozzo delle Ossa",
+        "nascosta": true,
+        "condizione_rivelazione": "Guardare il soffitto e attivare la trappola 'Cadrà lo straniero'"
+      }
+    ],
+    "oggetti": {
+      "visibili": [
+        { "nome": "Acciarino d'oro", "raccoglibile": true }
+      ],
+      "nascosti": [
+        {
+          "nome": "Chiave d'Ottone",
+          "raccoglibile": true,
+          "condizione_rivelazione": "Cercare fra i libri e trovare il libro falso"
+        },
+        {
+          "nome": "Pergamena Ingiallita",
+          "raccoglibile": true,
+          "condizione_rivelazione": "Cercare fra i libri"
+        }
+      ]
+    },
+    "eventi": [
+      {
+        "nome": "Fonte di luce",
+        "tipo": "crafting",
+        "ricetta": ["Lampada a olio", "Acciarino d'oro"],
+        "effetto": "Fonte di luce attivabile"
+      }
+    ]
+  },
+  {
+    "nome": "Pozzo delle Ossa",
+    "atmosfera": "Stanza putrescente piena di ossa; il foro di caduta è irraggiungibile.",
+    "uscite": [
+      {
+        "direzione": "EST",
+        "destinazione": "Cantina Umida",
+        "nascosta": true,
+        "condizione_rivelazione": "Inserire un osso nel foro della parete"
+      }
+    ],
+    "oggetti": {
+      "visibili": [
+        { "nome": "Ossa", "raccoglibile": true }
+      ],
+      "nascosti": []
+    },
+    "eventi": [
+      {
+        "nome": "Consunzione",
+        "tipo": "a_tempo",
+        "condizione": "Ogni turno",
+        "effetti": ["SALUTE -10", "Se SALUTE <= 0 => morte"]
+      },
+      {
+        "nome": "Trappola del foro",
+        "tipo": "condizionale",
+        "condizione": "Inserire il braccio nel foro",
+        "effetti": ["SALUTE = 0", "GAME OVER"]
+      }
+    ]
+  },
+  {
+    "nome": "Laboratorio",
+    "atmosfera": "Odore di zolfo e formaldeide, alambicchi e apparato metallico con foro prismatico.",
+    "uscite": [
+      { "direzione": "SUD", "destinazione": "Biblioteca Oscura" }
+    ],
+    "oggetti": {
+      "visibili": [],
+      "nascosti": [
+        {
+          "nome": "Provetta Vuota",
+          "raccoglibile": true,
+          "contenitore": "Cassetta di legno",
+          "condizione_rivelazione": "Aprire cassetta con Chiave d'Ottone"
+        }
+      ]
+    },
+    "eventi": [
+      {
+        "nome": "Preparazione Fluido Attivato",
+        "tipo": "sequenza_condizionale",
+        "passi": [
+          "Raccogliere il fluido blu nella provetta",
+          "Mescolare con acqua pura (borraccia)",
+          "Inserire la provetta prismatica nel foro prismatico",
+          "Posizionare accanto la lampada a olio accesa"
+        ],
+        "effetti": ["Ottieni 'Fluido Attivato'", "SET FLAG 'Fluido Attivato'"]
+      }
+    ]
+  },
+  {
+    "nome": "Cantina Umida",
+    "atmosfera": "Scaffali pieni di bottiglie di vino, vento da dietro uno scaffale.",
+    "uscite": [
+      {
+        "direzione": "SU",
+        "destinazione": "Maniero",
+        "condizione": "Botola del Maniero aperta"
+      }
+    ],
+    "oggetti": {
+      "visibili": [
+        { "nome": "Assi di legno", "raccoglibile": true },
+        { "nome": "Martello", "raccoglibile": true }
+      ],
+      "nascosti": []
+    },
+    "eventi": []
+  }
+]
