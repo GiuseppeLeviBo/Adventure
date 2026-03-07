@@ -408,7 +408,10 @@
   {
     "nome": "Camera da letto",
     "atmosfera": "Una grande camera da letto con mobili antichi e un letto al baldacchino. Su uno scrittoio è appoggiato un grande diario. Le tende del baldacchino sono chiuse.",
-    "uscite": [],
+    "uscite": [{
+        "direzione": "SUD",
+        "destinazione": "Corridoio"
+      }],
     "oggetti": {
       "visibili": [
         {
