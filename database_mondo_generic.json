@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "title": "Demo data-driven",
+    "version": 1
+  },
+  "state_defaults": {
+    "language": "it",
+    "health": 100,
+    "inventory": [],
+    "flags": [],
+    "vars": {
+      "wolf_steps": 0
+    }
+  },
+  "start_room": "cancello",
+  "messages": {
+    "unknown": "Non ho capito il comando.",
+    "help": "Comandi base: look, go <direzione>, take <oggetto>, drop <oggetto>, inventory, quit"
+  },
+  "rooms": {
+    "cancello": {
+      "name": "Cancello Arrugginito",
+      "description": "Nebbia fitta, inferriate contorte, pioggia sottile.",
+      "objects": [
+        {
+          "id": "cassetta",
+          "name": "Cassetta delle lettere",
+          "description": "Una cassetta metallica corrosa, ancora chiusa.",
+          "takeable": false,
+          "on_examine": [
+            {
+              "type": "set_flag",
+              "name": "mailbox_seen"
+            },
+            {
+              "type": "message",
+              "text": "Noti una piccola fessura nello sportello."
+            }
+          ]
+        },
+        {
+          "id": "lettera",
+          "name": "Lettera",
+          "description": "La carta è umida ma leggibile.",
+          "takeable": true,
+          "visible_if": "'mailbox_open' in flags",
+          "on_take": [
+            {
+              "type": "message",
+              "text": "La lettera dice: 'Un aiuto sarà dato a chi lo chiede prima di morire.'"
+            }
+          ]
+        }
+      ],
+      "exits": [
+        {
+          "direction": "NORD",
+          "to": "giardino"
+        }
+      ],
+      "events": [
+        {
+          "trigger": "on_command",
+          "match": {
+            "raw": "apri cassetta"
+          },
+          "effects": [
+            {
+              "type": "set_flag",
+              "name": "mailbox_open"
+            },
+            {
+              "type": "message",
+              "text": "Apri lo sportello: dentro trovi una lettera."
+            }
+          ]
+        }
+      ]
+    },
+    "giardino": {
+      "name": "Giardino Nebbioso",
+      "description": "Statue coperte di edera. Figure pietrificate. A nord incombe la casa.",
+      "objects": [
+        {
+          "id": "osso",
+          "name": "Osso carnoso",
+          "description": "Un osso ancora ricoperto di brandelli di carne.",
+          "takeable": true
+        }
+      ],
+      "exits": [
+        {
+          "direction": "SUD",
+          "to": "cancello"
+        },
+        {
+          "direction": "NORD",
+          "to": "maniero",
+          "condition": "'chiave_ferro' in inventory"
+        }
+      ],
+      "events": [
+        {
+          "trigger": "on_turn",
+          "effects": [
+            {
+              "type": "inc_var",
+              "name": "wolf_steps",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "trigger": "on_turn",
+          "condition": "room == 'giardino' and vars.get('wolf_steps', 0) >= 3 and 'lupo_domato' not in flags",
+          "effects": [
+            {
+              "type": "message",
+              "text": "Un lupo infernale emerge dalla nebbia."
+            },
+            {
+              "type": "damage",
+              "value": 10
+            }
+          ]
+        },
+        {
+          "trigger": "on_take",
+          "match": {
+            "object": "osso"
+          },
+          "effects": [
+            {
+              "type": "message",
+              "text": "Potrebbe tornarti utile contro un predatore."
+            }
+          ]
+        }
+      ]
+    },
+    "maniero": {
+      "name": "Maniero",
+      "description": "Atrio immenso, odore di cera antica e silenzio opprimente.",
+      "objects": [],
+      "exits": [
+        {
+          "direction": "SUD",
+          "to": "giardino"
+        }
+      ]
+    }
+  },
+  "global_events": [
+    {
+      "trigger": "on_command",
+      "match": {
+        "raw": "usa osso su lupo"
+      },
+      "condition": "room == 'giardino' and 'osso' in inventory",
+      "effects": [
+        {
+          "type": "set_flag",
+          "name": "lupo_domato"
+        },
+        {
+          "type": "remove_item",
+          "item": "osso"
+        },
+        {
+          "type": "message",
+          "text": "Il lupo azzanna l'osso e si calma."
+        }
+      ]
+    }
+  ]
+}

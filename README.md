@@ -41,3 +41,26 @@ In pratica:
 - Conversione del database in formato strutturato (JSON/YAML).
 - Script di validazione automatica della mappa (coerenza uscite, stanze raggiungibili, item unici).
 - Interfaccia CLI/Web per giocare senza copiare manualmente i prompt.
+
+
+## Motore data-driven (nuovo)
+
+È stata aggiunta una versione del motore senza logica hard-coded specifica del mondo:
+
+- `Avventura_data_driven.py` contiene solo regole **generiche** del runtime (stato universale, parser base, dispatch eventi, applicazione effetti).
+- `database_mondo_generic.json` mostra lo schema consigliato dove mappe, oggetti, trigger, condizioni ed effetti sono dichiarati nel database.
+
+### Avvio demo
+
+```bash
+python Avventura_data_driven.py --db database_mondo_generic.json
+```
+
+### Idea chiave
+
+Il motore interpreta un DSL minimale nel JSON:
+- `condition` (espressione su `room`, `flags`, `inventory`, `vars`, `turn`)
+- `events` con `trigger` (`on_enter`, `on_turn`, `on_command`, `on_take`, ...)
+- `effects` (`set_flag`, `inc_var`, `message`, `move_player`, `damage`, ecc.)
+
+In questo modo la logica narrativa/specifica del gioco resta nei dati e il motore resta riusabile.
