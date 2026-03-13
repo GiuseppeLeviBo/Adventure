@@ -142,6 +142,32 @@ def llm_descrivi(ctx: str) -> Optional[str]:
     return _llm_call(_SYSTEM_NARRATORE, ctx, temp=0.7)
 
 
+def llm_traduci(testo: str, lingua: str) -> str:
+    if not testo or not USE_LLM:
+        return testo
+    if (lingua or "").strip().lower() in ("italiano", "it", "ita"):
+        return testo
+
+    system_prompt = (
+        "Sei il traduttore silente di un'avventura testuale. "
+        f"Traduci la frase in {lingua.upper()}. "
+        "REGOLE: mantieni formattazione, emoji e simboli invariati; "
+        "non aggiungere commenti, preamboli o spiegazioni; restituisci solo la traduzione."
+    )
+
+    raw = _llm_call(system_prompt, testo, max_tokens=320, temp=0.1)
+    if not raw:
+        return testo
+
+    clean = re.sub(
+        r"^(Here is|Sure|Ok|Okay|Translation:)\s*",
+        "",
+        raw,
+        flags=re.IGNORECASE,
+    ).strip()
+    return clean or testo
+
+
 def _parse_json_blob(raw: str) -> Optional[Any]:
     if not raw:
         return None
