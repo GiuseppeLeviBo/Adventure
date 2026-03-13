@@ -1,0 +1,66 @@
+{
+    "stanza": "Cantina Umida",
+    "salute": 100,
+    "inv": [
+        "Coltello da caccia",
+        "Chiave di Ferro",
+        "Assi di legno",
+        "Martello"
+    ],
+    "flags": [
+        "Lupo Domato"
+    ],
+    "turno": 16,
+    "t_stanza": {
+        "Cancello Arrugginito": 1,
+        "Giardino Nebbioso": 5,
+        "Capanno Marcescente": 4,
+        "Maniero": 8,
+        "Cantina Umida": 3
+    },
+    "rivelati": {
+        "Capanno Marcescente": []
+    },
+    "uscite_r": {
+        "Maniero": [
+            "OVEST",
+            "GIU"
+        ]
+    },
+    "raccolti": [
+        "Capanno Marcescente|Coltello da caccia",
+        "Capanno Marcescente|Chiave di Ferro",
+        "Capanno Marcescente|Petrolio per lanterne",
+        "Cantina Umida|Martello",
+        "Cantina Umida|Assi di legno",
+        "Capanno Marcescente|Scatola con un fiammifero",
+        "Capanno Marcescente|Osso carnoso"
+    ],
+    "prima_visita": [
+        "Maniero",
+        "Cantina Umida",
+        "Capanno Marcescente",
+        "Giardino Nebbioso",
+        "Cancello Arrugginito"
+    ],
+    "cassetta_aperta": false,
+    "tappeto_spostato": true,
+    "botola_vista": true,
+    "botola_aperta": true,
+    "lanterna_con_olio": true,
+    "lanterna_accesa": true,
+    "carne_osservata": false,
+    "zombi_comparso": false,
+    "zombi_vivo": false,
+    "tabernacolo_aperto": false,
+    "provetta_stato": null,
+    "lampada_posizionata": false,
+    "salsicce": 20,
+    "borraccia_usi": 3,
+    "libro_falso_trovato": false,
+    "volumi_riordinati": false,
+    "pergamena_letta": false,
+    "tende_aperte": false,
+    "scala_riparata": false,
+    "lingua": "english"
+}

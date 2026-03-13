@@ -1,0 +1,999 @@
+{
+  "configurazione": {
+    "stanza_iniziale": "cancello_arrugginito",
+    "salute_max": 100,
+    "variabili_iniziali": {
+      "salsicce": 20,
+      "borraccia_usi": 0
+    }
+  },
+  "stanze":[
+    {
+      "id": "cancello_arrugginito",
+      "nome": "Cancello Arrugginito",
+      "atmosfera": "Nebbia fitta, inferriate contorte, pioggia sottile. Un freddo opprimente.",
+      "uscite":[
+        {"direzione": "NORD", "destinazione": "giardino_nebbioso"},
+        {"direzione": "EST", "destinazione": "palude_fangosa"}
+      ],
+      "oggetti_visibili":["cassetta_lettere"],
+      "oggetti_nascosti": ["lettera_misteriosa"],
+      "eventi": [],
+      "interazioni_stanza":[]
+    },
+    {
+      "id": "palude_fangosa",
+      "nome": "Palude Fangosa",
+      "atmosfera": "Melma vischiosa e disorientante. Più ti muovi, più sprofondi.",
+      "uscite":[
+        {"direzione": "OVEST", "destinazione": "cancello_arrugginito"}
+      ],
+      "oggetti_visibili":[],
+      "oggetti_nascosti": [],
+      "interazioni_stanza": [],
+      "eventi":[
+        {
+          "trigger": "on_turn",
+          "condizioni":[{"tipo": "turni_stanza_uguale", "valore": 1}],
+          "effetti":[{"tipo": "messaggio", "testo": "L'ambiente mette angoscia e oppressione."}]
+        },
+        {
+          "trigger": "on_turn",
+          "condizioni":[{"tipo": "turni_stanza_uguale", "valore": 2}],
+          "effetti":[{"tipo": "messaggio", "testo": "⚠ I tuoi piedi cominciano ad affondare nel fango."}]
+        },
+        {
+          "trigger": "on_turn",
+          "condizioni":[{"tipo": "turni_stanza_maggior_uguale", "valore": 3}],
+          "effetti":[
+            {"tipo": "modifica_salute", "valore": -10},
+            {"tipo": "messaggio", "testo": "⚠ La palude ti inghiotte lentamente! Ti toglie il respiro."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "giardino_nebbioso",
+      "nome": "Giardino Nebbioso",
+      "atmosfera": "Statue coperte di edera che ti fissano. Forme grottesche nella nebbia.",
+      "uscite":[
+        {"direzione": "SUD", "destinazione": "cancello_arrugginito"},
+        {"direzione": "EST", "destinazione": "capanno_marcescente"},
+        {
+          "direzione": "NORD", 
+          "destinazione": "maniero", 
+          "bloccata": true, 
+          "sbloccata_da_flag": "cancello_maniero_aperto", 
+          "messaggio_blocco": "⚠ Il pesante portone del Maniero è chiuso. Serve una chiave robusta."
+        }
+      ],
+      "oggetti_visibili": ["portone_maniero"],
+      "oggetti_nascosti": ["lupo_infernale"],
+      "interazioni_stanza":[],
+      "eventi": [
+        {
+          "trigger": "on_turn",
+          "condizioni":[
+            {"tipo": "turni_stanza_uguale", "valore": 1},
+            {"tipo": "flag_falso", "nome": "lupo_risolto"}
+          ],
+          "effetti":[{"tipo": "messaggio", "testo": "In lontananza si sente l'abbaiare rabbioso di un cane."}]
+        },
+        {
+          "trigger": "on_turn",
+          "condizioni":[
+            {"tipo": "turni_stanza_uguale", "valore": 2},
+            {"tipo": "flag_falso", "nome": "lupo_risolto"}
+          ],
+          "effetti":[{"tipo": "messaggio", "testo": "⚠ Il latrato si avvicina, accompagnato da ringhi gutturali."}]
+        },
+        {
+          "trigger": "on_turn",
+          "condizioni":[
+            {"tipo": "turni_stanza_maggior_uguale", "valore": 3},
+            {"tipo": "flag_falso", "nome": "lupo_risolto"},
+            {"tipo": "flag_falso", "nome": "lupo_in_attacco"}
+          ],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "lupo_in_attacco", "valore": true},
+            {"tipo": "rivela_oggetto", "oggetto": "lupo_infernale"},
+            {"tipo": "messaggio", "testo": "🐺 Un Lupo Infernale emerge dalla nebbia e ti fissa con occhi rossi!"}
+          ]
+        },
+        {
+          "trigger": "on_turn",
+          "condizioni":[
+            {"tipo": "turni_stanza_maggior_uguale", "valore": 4},
+            {"tipo": "flag_vero", "nome": "lupo_in_attacco"},
+            {"tipo": "flag_falso", "nome": "lupo_risolto"}
+          ],
+          "effetti":[
+            {"tipo": "messaggio", "testo": "💀 Tenti di esitare, ma il Lupo Infernale balza e ti sbrana la gola."},
+            {"tipo": "muori"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "capanno_marcescente",
+      "nome": "Capanno Marcescente",
+      "atmosfera": "Odore di legno marcio e ruggine. L'oscurità nasconde scarti dimenticati.",
+      "uscite":[
+        {"direzione": "OVEST", "destinazione": "giardino_nebbioso"}
+      ],
+      "oggetti_visibili":["coltello_caccia", "osso_carnoso"],
+      "oggetti_nascosti":["chiave_ferro", "petrolio", "scatola_fiammiferi"],
+      "eventi":[],
+      "interazioni_stanza":[
+        {
+          "comando": "cerca",
+          "condizioni": [{"tipo": "flag_falso", "nome": "attrezzi_cercati"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "attrezzi_cercati", "valore": true},
+            {"tipo": "rivela_oggetto", "oggetto": "chiave_ferro"},
+            {"tipo": "rivela_oggetto", "oggetto": "petrolio"},
+            {"tipo": "rivela_oggetto", "oggetto": "scatola_fiammiferi"},
+            {"tipo": "messaggio", "testo": "🔍 Rovistando tra i detriti trovi una Chiave di Ferro, del Petrolio e una Scatola di Fiammiferi."}
+          ],
+          "errore": "Hai già frugato a fondo qui."
+        }
+      ]
+    },
+    {
+      "id": "maniero",
+      "nome": "Maniero",
+      "atmosfera": "Atrio immenso, odore di polvere e cera antica. Un silenzio di tomba.",
+      "stati_atmosfera":[
+        {"condizione": {"tipo": "flag_vero", "nome": "lanterna_accesa"}, "testo": "La lanterna accesa appesa illumina a giorno i tetri muri."},
+        {"condizione": {"tipo": "flag_falso", "nome": "lanterna_accesa"}, "testo": "Una lanterna spenta pende dal soffitto."},
+        {"condizione": {"tipo": "flag_vero", "nome": "tappeto_spostato"}, "testo": "Il pesante tappeto cremisi è stato spinto di lato."}
+      ],
+      "uscite":[
+        {"direzione": "SUD", "destinazione": "giardino_nebbioso"},
+        {"direzione": "EST", "destinazione": "biblioteca_oscura"},
+        {"direzione": "SU", "destinazione": "scalinata"},
+        {
+          "direzione": "OVEST", 
+          "destinazione": "sala_pranzo", 
+          "bloccata": true, 
+          "sbloccata_da_flag": "lanterna_accesa", 
+          "messaggio_blocco": "Troppo buio per inoltrarsi in quel corridoio."
+        },
+        {
+          "direzione": "GIU", 
+          "destinazione": "cantina_umida", 
+          "bloccata": true, 
+          "sbloccata_da_flag": "botola_aperta", 
+          "messaggio_blocco": "La botola sul pavimento è chiusa."
+        }
+      ],
+      "oggetti_visibili":["tappeto", "lanterna_fissa"],
+      "oggetti_nascosti": ["botola"],
+      "eventi":[],
+      "interazioni_stanza":[]
+    },
+    {
+      "id": "cantina_umida",
+      "nome": "Cantina Umida",
+      "atmosfera": "Scaffali pieni di bottiglie di vino, vento da dietro uno scaffale.",
+      "uscite":[
+        {"direzione": "SU", "destinazione": "maniero"}
+      ],
+      "oggetti_visibili": ["assi_legno", "martello"],
+      "oggetti_nascosti": [],
+      "eventi": [],
+      "interazioni_stanza":[]
+    },
+    {
+      "id": "sala_pranzo",
+      "nome": "Sala da Pranzo",
+      "atmosfera": "Tavolo apparecchiato per una cena mai consumata. L'aria è nauseabonda.",
+      "uscite":[
+        {"direzione": "EST", "destinazione": "maniero"},
+        {"direzione": "NORD", "destinazione": "cucina"}
+      ],
+      "oggetti_visibili": ["candelabro", "carne_putrefatta"],
+      "oggetti_nascosti": ["zombi", "chiave_argento"],
+      "interazioni_stanza": [],
+      "eventi":[
+        {
+          "trigger": "on_turn",
+          "condizioni":[
+            {"tipo": "turni_stanza_maggior_uguale", "valore": 2},
+            {"tipo": "flag_falso", "nome": "zombi_morto"},
+            {"tipo": "flag_falso", "nome": "zombi_spawnato"}
+          ],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "zombi_spawnato", "valore": true},
+            {"tipo": "rivela_oggetto", "oggetto": "zombi"},
+            {"tipo": "messaggio", "testo": "☠ Un Servitore Zombi putrefatto si trascina fuori da sotto il tavolo!"}
+          ]
+        },
+        {
+          "trigger": "on_turn",
+          "condizioni":[
+            {"tipo": "flag_vero", "nome": "zombi_spawnato"},
+            {"tipo": "flag_falso", "nome": "zombi_morto"}
+          ],
+          "effetti":[
+            {"tipo": "modifica_salute", "valore": -20},
+            {"tipo": "messaggio", "testo": "👊 Lo zombi ti afferra e ti morde! Perdi salute."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cucina",
+      "nome": "Cucina",
+      "atmosfera": "Tavolo di marmo, camino spento, armadi sventrati.",
+      "uscite":[
+        {"direzione": "SUD", "destinazione": "sala_pranzo"},
+        {"direzione": "NORD", "destinazione": "retro_casa"}
+      ],
+      "oggetti_visibili": ["catena_salsicce", "borraccia", "lavandino"],
+      "oggetti_nascosti": [],
+      "eventi": [],
+      "interazioni_stanza":[]
+    },
+    {
+      "id": "retro_casa",
+      "nome": "Retro della Casa",
+      "atmosfera": "Cortile gelido con nebbia rada e un Antico Ulivo millenario.",
+      "uscite":[
+        {"direzione": "SUD", "destinazione": "cucina"}
+      ],
+      "oggetti_visibili":["ulivo", "tabernacolo"],
+      "oggetti_nascosti": ["lampada_olio"],
+      "eventi": [],
+      "interazioni_stanza":[]
+    },
+    {
+      "id": "scalinata",
+      "nome": "Scalinata",
+      "atmosfera": "Gradini di legno un tempo lussuosi. Quadri sinistri ti osservano.",
+      "uscite":[
+        {"direzione": "GIU", "destinazione": "maniero"},
+        {
+          "direzione": "SU", 
+          "destinazione": "corridoio", 
+          "bloccata": true, 
+          "sbloccata_da_flag": "scala_riparata", 
+          "messaggio_blocco": "La scala è fracassata, se provi a salire potresti cadere e morire. Servono riparazioni."
+        }
+      ],
+      "oggetti_visibili":["gradini_rotti"],
+      "oggetti_nascosti": [],
+      "eventi":[],
+      "interazioni_stanza":[]
+    },
+    {
+      "id": "corridoio",
+      "nome": "Corridoio",
+      "atmosfera": "Buio. Teche anatomiche lungo i muri contenenti orrori imprecisati.",
+      "uscite":[
+        {"direzione": "GIU", "destinazione": "scalinata"},
+        {"direzione": "NORD", "destinazione": "camera_letto"}
+      ],
+      "oggetti_visibili":["teche_anatomiche"],
+      "oggetti_nascosti": [],
+      "interazioni_stanza":[],
+      "eventi":[
+        {
+          "trigger": "on_turn",
+          "condizioni": [{"tipo": "turni_stanza_uguale", "valore": 2}],
+          "effetti":[{"tipo": "messaggio", "testo": "⚠ Il cuore accelera. Le creature nelle teche sembrano seguirti."}]
+        },
+        {
+          "trigger": "on_turn",
+          "condizioni":[{"tipo": "turni_stanza_maggior_uguale", "valore": 3}],
+          "effetti":[
+            {"tipo": "modifica_salute", "valore": -15},
+            {"tipo": "messaggio", "testo": "⚠ Il terrore del corridoio ti consuma la mente. Perdi salute."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "camera_letto",
+      "nome": "Camera da Letto",
+      "atmosfera": "Un letto massiccio e uno scrittoio. Odore di malattia passata.",
+      "stati_atmosfera":[
+        {"condizione": {"tipo": "flag_falso", "nome": "tende_aperte"}, "testo": "Le tende del letto a baldacchino sono chiuse."},
+        {"condizione": {"tipo": "flag_vero", "nome": "tende_aperte"}, "testo": "Le tende sono aperte, rivelando la figura al suo interno."}
+      ],
+      "uscite":[
+        {"direzione": "SUD", "destinazione": "corridoio"}
+      ],
+      "oggetti_visibili":["diario", "letto_baldacchino"],
+      "oggetti_nascosti":["dama_pietra"],
+      "eventi": [],
+      "interazioni_stanza":[]
+    },
+    {
+      "id": "biblioteca_oscura",
+      "nome": "Biblioteca Oscura",
+      "atmosfera": "Scaffali altissimi, libri ammuffiti. Sensazione di vertigine.",
+      "uscite":[
+        {"direzione": "OVEST", "destinazione": "maniero"},
+        {
+          "direzione": "NORD", 
+          "destinazione": "laboratorio", 
+          "bloccata": true, 
+          "sbloccata_da_flag": "passaggio_biblioteca_aperto", 
+          "messaggio_blocco": ""
+        }
+      ],
+      "oggetti_visibili": ["scaffali", "soffitto"],
+      "oggetti_nascosti": ["chiave_ottone", "pergamena"],
+      "eventi": [],
+      "interazioni_stanza":[
+        {
+          "comando": "cerca",
+          "condizioni":[{"tipo": "flag_falso", "nome": "libri_cercati"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "libri_cercati", "valore": true},
+            {"tipo": "rivela_oggetto", "oggetto": "chiave_ottone"},
+            {"tipo": "rivela_oggetto", "oggetto": "pergamena"},
+            {"tipo": "messaggio", "testo": "🔍 Tra i volumi trovi un libro falso contenente una Chiave d'Ottone e una Pergamena."}
+          ],
+          "errore": "Hai già guardato tutti i libri interessanti."
+        },
+        {
+          "comando": "riordina",
+          "condizioni":[
+            {"tipo": "flag_vero", "nome": "pergamena_letta"},
+            {"tipo": "flag_falso", "nome": "passaggio_biblioteca_aperto"}
+          ],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "passaggio_biblioteca_aperto", "valore": true},
+            {"tipo": "sblocca_uscita", "direzione": "NORD"},
+            {"tipo": "messaggio", "testo": "📚 Seguendo le istruzioni, riordini i volumi. Uno scaffale scivola rivelando un varco a NORD!"}
+          ],
+          "errore": "Non sai in che ordine metterli. Sposti libri a caso ma non accade nulla."
+        }
+      ]
+    },
+    {
+      "id": "pozzo_ossa",
+      "nome": "Pozzo delle Ossa",
+      "atmosfera": "Una fossa putrescente. Le pareti sono troppo lisce per arrampicarsi.",
+      "uscite":[
+        {
+          "direzione": "EST", 
+          "destinazione": "cantina_umida", 
+          "bloccata": true, 
+          "sbloccata_da_flag": "passaggio_pozzo_aperto", 
+          "messaggio_blocco": "Sei in trappola."
+        }
+      ],
+      "oggetti_visibili":["mucchio_ossa", "foro_parete"],
+      "oggetti_nascosti":[],
+      "interazioni_stanza": [],
+      "eventi":[
+        {
+          "trigger": "on_turn",
+          "condizioni":[{"tipo": "turni_stanza_maggior_uguale", "valore": 1}],
+          "effetti":[
+            {"tipo": "modifica_salute", "valore": -15},
+            {"tipo": "messaggio", "testo": "⚠ I miasmi tossici ti corrodono i polmoni."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratorio",
+      "nome": "Laboratorio",
+      "atmosfera": "Odore pungente di zolfo. Strumenti alchemici ovunque.",
+      "stati_atmosfera":[
+        {"condizione": {"tipo": "flag_vero", "nome": "lampada_piazzata"}, "testo": "Una lampada a olio è posizionata vicino al prisma."}
+      ],
+      "uscite":[
+        {"direzione": "SUD", "destinazione": "biblioteca_oscura"}
+      ],
+      "oggetti_visibili":["cassetta_legno", "alambicco", "apparato_prismatico"],
+      "oggetti_nascosti": ["provetta_vuota", "provetta_attivata"],
+      "eventi": [],
+      "interazioni_stanza": []
+    }
+  ],
+  "oggetti":[
+    {
+      "id": "cassetta_lettere",
+      "nome": "Cassetta delle lettere",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "apri",
+          "condizioni":[{"tipo": "flag_falso", "nome": "cassetta_aperta"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "cassetta_aperta", "valore": true},
+            {"tipo": "rivela_oggetto", "oggetto": "lettera_misteriosa"},
+            {"tipo": "messaggio", "testo": "📬 Apri la cassetta scricchiolante. C'è qualcosa dentro!"}
+          ],
+          "errore": "La cassetta è già aperta."
+        }
+      ]
+    },
+    {
+      "id": "lettera_misteriosa",
+      "nome": "Lettera",
+      "raccoglibile": true,
+      "interazioni":[
+        {
+          "comando": "leggi",
+          "condizioni": [],
+          "effetti":[
+            {"tipo": "messaggio", "testo": "📜 «Benvenuto, la sorte ti ha portato qui. Un aiuto sarà dato a chi lo chiede. Se lo chiede prima di morire.»"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "portone_maniero",
+      "nome": "Portone del Maniero",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "apri",
+          "strumento": "chiave_ferro",
+          "condizioni":[
+            {"tipo": "ha_oggetto", "oggetto": "chiave_ferro"},
+            {"tipo": "flag_falso", "nome": "cancello_maniero_aperto"}
+          ],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "cancello_maniero_aperto", "valore": true},
+            {"tipo": "sblocca_uscita", "direzione": "NORD"},
+            {"tipo": "messaggio", "testo": "🔑 Gira la chiave e il pesante portone del Maniero si sblocca."}
+          ],
+          "errore": "È serrato a chiave. Serve una chiave pesante di ferro."
+        }
+      ]
+    },
+    {
+      "id": "lupo_infernale",
+      "nome": "Lupo Infernale",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "dai",
+          "strumento": "osso_carnoso",
+          "condizioni":[{"tipo": "ha_oggetto", "oggetto": "osso_carnoso"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "lupo_risolto", "valore": true},
+            {"tipo": "set_flag", "nome": "lupo_in_attacco", "valore": false},
+            {"tipo": "rimuovi_oggetto", "oggetto": "osso_carnoso"},
+            {"tipo": "nascondi_oggetto", "oggetto": "lupo_infernale"},
+            {"tipo": "messaggio", "testo": "🐺 Lanci l'osso. Il lupo ringhia, afferra l'osso e sparisce tra le nebbie. Sei salvo."}
+          ],
+          "errore": "Non hai niente di succulento da dargli."
+        },
+        {
+          "comando": "attacca",
+          "strumento": "coltello_caccia",
+          "condizioni": [{"tipo": "ha_oggetto", "oggetto": "coltello_caccia"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "lupo_risolto", "valore": true},
+            {"tipo": "set_flag", "nome": "lupo_in_attacco", "valore": false},
+            {"tipo": "nascondi_oggetto", "oggetto": "lupo_infernale"},
+            {"tipo": "modifica_salute", "valore": -50},
+            {"tipo": "messaggio", "testo": "⚔ Combatti il lupo con il coltello! Alla fine lo uccidi, ma vieni ferito gravemente. (-50 Salute)"}
+          ],
+          "errore": "Combattere a mani nude è un suicidio."
+        }
+      ]
+    },
+    {
+      "id": "coltello_caccia",
+      "nome": "Coltello da caccia",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "osso_carnoso",
+      "nome": "Osso carnoso",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "chiave_ferro",
+      "nome": "Chiave di Ferro",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "petrolio",
+      "nome": "Petrolio per lanterne",
+      "raccoglibile": true,
+      "interazioni":[
+        {
+          "comando": "usa",
+          "target": "lanterna_fissa",
+          "condizioni":[{"tipo": "flag_falso", "nome": "lanterna_con_olio"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "lanterna_con_olio", "valore": true},
+            {"tipo": "rimuovi_oggetto", "oggetto": "petrolio"},
+            {"tipo": "messaggio", "testo": "💧 Versi il petrolio nella lanterna del Maniero."}
+          ],
+          "errore": "Non sai dove usarlo qui."
+        }
+      ]
+    },
+    {
+      "id": "scatola_fiammiferi",
+      "nome": "Scatola con un fiammifero",
+      "raccoglibile": true,
+      "interazioni":[
+        {
+          "comando": "usa",
+          "target": "lanterna_fissa",
+          "condizioni":[
+            {"tipo": "flag_vero", "nome": "lanterna_con_olio"},
+            {"tipo": "flag_falso", "nome": "lanterna_accesa"}
+          ],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "lanterna_accesa", "valore": true},
+            {"tipo": "rimuovi_oggetto", "oggetto": "scatola_fiammiferi"},
+            {"tipo": "sblocca_uscita", "direzione": "OVEST"},
+            {"tipo": "messaggio", "testo": "🔆 Accendi la lanterna! La luce rivela l'accesso alla Sala da Pranzo (OVEST)."}
+          ],
+          "errore": "Serve del combustibile prima di sprecare l'unico fiammifero."
+        }
+      ]
+    },
+    {
+      "id": "tappeto",
+      "nome": "Pesante tappeto cremisi",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "sposta",
+          "condizioni":[{"tipo": "flag_falso", "nome": "tappeto_spostato"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "tappeto_spostato", "valore": true},
+            {"tipo": "rivela_oggetto", "oggetto": "botola"},
+            {"tipo": "messaggio", "testo": "🔲 Sposti il tappeto, rivelando una grossa botola di legno."}
+          ],
+          "errore": "Hai già spostato il tappeto."
+        }
+      ]
+    },
+    {
+      "id": "lanterna_fissa",
+      "nome": "Lanterna appesa",
+      "raccoglibile": false,
+      "interazioni":[]
+    },
+    {
+      "id": "botola",
+      "nome": "Botola",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "apri",
+          "strumento": "chiave_ferro",
+          "condizioni":[{"tipo": "ha_oggetto", "oggetto": "chiave_ferro"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "botola_aperta", "valore": true},
+            {"tipo": "sblocca_uscita", "direzione": "GIU"},
+            {"tipo": "messaggio", "testo": "🔑 La botola si apre, svelando gradini bui verso il basso."}
+          ],
+          "errore": "È bloccata, serve una grossa chiave in ferro."
+        }
+      ]
+    },
+    {
+      "id": "assi_legno",
+      "nome": "Assi di legno",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "martello",
+      "nome": "Martello",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "carne_putrefatta",
+      "nome": "Carne putrefatta",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "esamina",
+          "condizioni":[{"tipo": "flag_falso", "nome": "carne_osservata"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "carne_osservata", "valore": true},
+            {"tipo": "messaggio", "testo": "La carne sembra rosicchiata di recente... C'è qualcosa sotto il tavolo!"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zombi",
+      "nome": "Servitore Zombi",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "attacca",
+          "strumento": "coltello_caccia",
+          "condizioni":[{"tipo": "ha_oggetto", "oggetto": "coltello_caccia"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "zombi_morto", "valore": true},
+            {"tipo": "nascondi_oggetto", "oggetto": "zombi"},
+            {"tipo": "rivela_oggetto", "oggetto": "chiave_argento"},
+            {"tipo": "messaggio", "testo": "⚔ Uccidi lo zombi col coltello. Crolla a terra, facendo cadere una Chiave d'Argento."}
+          ],
+          "errore": "Senza un'arma rischi di essere infettato."
+        },
+        {
+          "comando": "attacca",
+          "strumento": "candelabro",
+          "condizioni":[{"tipo": "ha_oggetto", "oggetto": "candelabro"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "zombi_morto", "valore": true},
+            {"tipo": "nascondi_oggetto", "oggetto": "zombi"},
+            {"tipo": "rivela_oggetto", "oggetto": "chiave_argento"},
+            {"tipo": "messaggio", "testo": "💥 Sfasci la testa dello zombi col candelabro. A terra vedi una Chiave d'Argento."}
+          ],
+          "errore": "Senza un'arma non puoi fargli danno."
+        }
+      ]
+    },
+    {
+      "id": "candelabro",
+      "nome": "Candelabro pesante",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "chiave_argento",
+      "nome": "Chiave d'Argento",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "catena_salsicce",
+      "nome": "Salsicce",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "prendi",
+          "condizioni":[{"tipo": "variabile_maggiore_di", "nome": "salsicce", "valore": 0}],
+          "effetti":[
+            {"tipo": "modifica_salute", "valore": 10},
+            {"tipo": "modifica_variabile", "nome": "salsicce", "valore": -1},
+            {"tipo": "messaggio", "testo": "🍖 Mangi una salsiccia al volo. Recuperi 10 salute!"}
+          ],
+          "errore": "Le hai mangiate tutte."
+        }
+      ]
+    },
+    {
+      "id": "borraccia",
+      "nome": "Borraccia d'acqua",
+      "raccoglibile": true,
+      "interazioni":[
+        {
+          "comando": "leggi",
+          "condizioni": [],
+          "effetti":[],
+          "errore": "Non ci sono scritte."
+        },
+        {
+          "comando": "riempi",
+          "target": "lavandino",
+          "condizioni":[],
+          "effetti":[
+            {"tipo": "modifica_variabile_set", "nome": "borraccia_usi", "valore": 3},
+            {"tipo": "messaggio", "testo": "💧 Riempi la borraccia di acqua fresca (3 usi)."}
+          ]
+        },
+        {
+          "comando": "usa",
+          "condizioni":[{"tipo": "variabile_maggiore_di", "nome": "borraccia_usi", "valore": 0}],
+          "effetti":[
+            {"tipo": "modifica_salute", "valore": 5},
+            {"tipo": "modifica_variabile", "nome": "borraccia_usi", "valore": -1},
+            {"tipo": "messaggio", "testo": "💧 Bevi un sorso d'acqua. Recuperi 5 salute."}
+          ],
+          "errore": "La borraccia è vuota. Cerca una fonte."
+        }
+      ]
+    },
+    {
+      "id": "lavandino",
+      "nome": "Lavandino",
+      "raccoglibile": false,
+      "interazioni":[]
+    },
+    {
+      "id": "ulivo",
+      "nome": "Antico Ulivo",
+      "raccoglibile": false,
+      "interazioni":[]
+    },
+    {
+      "id": "tabernacolo",
+      "nome": "Tabernacolo",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "apri",
+          "strumento": "chiave_argento",
+          "condizioni":[
+            {"tipo": "ha_oggetto", "oggetto": "chiave_argento"},
+            {"tipo": "flag_falso", "nome": "tabernacolo_aperto"}
+          ],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "tabernacolo_aperto", "valore": true},
+            {"tipo": "rivela_oggetto", "oggetto": "lampada_olio"},
+            {"tipo": "messaggio", "testo": "✨ Apri il tabernacolo. All'interno trovi una preziosa Lampada a olio."}
+          ],
+          "errore": "È bloccato misticamente. La toppa è color argento."
+        }
+      ]
+    },
+    {
+      "id": "lampada_olio",
+      "nome": "Lampada a olio",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "gradini_rotti",
+      "nome": "Gradini rotti",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "ripara",
+          "condizioni":[
+            {"tipo": "ha_oggetto", "oggetto": "assi_legno"},
+            {"tipo": "ha_oggetto", "oggetto": "martello"}
+          ],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "scala_riparata", "valore": true},
+            {"tipo": "sblocca_uscita", "direzione": "SU"},
+            {"tipo": "messaggio", "testo": "🔨 Usi le assi e il martello per riparare la scala. Ora è percorribile verso l'alto."}
+          ],
+          "errore": "Ti servono legno e uno strumento per piantare i chiodi."
+        }
+      ]
+    },
+    {
+      "id": "teche_anatomiche",
+      "nome": "Teche anatomiche",
+      "raccoglibile": false,
+      "interazioni":[]
+    },
+    {
+      "id": "letto_baldacchino",
+      "nome": "Letto a baldacchino",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "apri",
+          "condizioni":[{"tipo": "flag_falso", "nome": "tende_aperte"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "tende_aperte", "valore": true},
+            {"tipo": "rivela_oggetto", "oggetto": "dama_pietra"},
+            {"tipo": "messaggio", "testo": "Le tende si aprono, svelando una donna di pietra seduta sul letto."}
+          ],
+          "errore": "Le tende sono già spalancate."
+        }
+      ]
+    },
+    {
+      "id": "dama_pietra",
+      "nome": "Dama di pietra",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "usa",
+          "strumento": "provetta_attivata",
+          "condizioni":[{"tipo": "ha_oggetto", "oggetto": "provetta_attivata"}],
+          "effetti":[
+            {"tipo": "messaggio", "testo": "Versi il Fluido Attivato sulla scultura. Il grigio abbandona la sua pelle... il respiro ritorna."},
+            {"tipo": "vittoria"}
+          ],
+          "errore": "Ti serve l'elisir della vita per spezzare la maledizione."
+        }
+      ]
+    },
+    {
+      "id": "diario",
+      "nome": "Diario",
+      "raccoglibile": true,
+      "interazioni":[
+        {
+          "comando": "leggi",
+          "condizioni": [],
+          "effetti":[
+            {"tipo": "messaggio", "testo": "📖 «La formula è nel laboratorio a nord, bloccato dal sapere. Usa il prisma e la luce per attivarla... e attenzione al soffitto!»"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scaffali",
+      "nome": "Volumi e scaffali",
+      "raccoglibile": false,
+      "interazioni":[]
+    },
+    {
+      "id": "soffitto",
+      "nome": "Soffitto a cassettoni",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "esamina",
+          "condizioni": [],
+          "effetti":[
+            {"tipo": "sposta_giocatore", "destinazione": "pozzo_ossa"},
+            {"tipo": "messaggio", "testo": "Alzi lo sguardo... e scatta una trappola sotto i tuoi piedi! Precipiti nel vuoto."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chiave_ottone",
+      "nome": "Chiave d'Ottone",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "pergamena",
+      "nome": "Pergamena",
+      "raccoglibile": true,
+      "interazioni": [
+        {
+          "comando": "leggi",
+          "condizioni": [],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "pergamena_letta", "valore": true},
+            {"tipo": "messaggio", "testo": "📜 Un crittogramma ti spiega l'esatto ordine in cui riordinare i volumi in biblioteca per sbloccare la porta segreta a NORD."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mucchio_ossa",
+      "nome": "Ossa",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "foro_parete",
+      "nome": "Foro nella parete",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "inserisci",
+          "strumento": "mucchio_ossa",
+          "condizioni":[{"tipo": "ha_oggetto", "oggetto": "mucchio_ossa"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "passaggio_pozzo_aperto", "valore": true},
+            {"tipo": "sblocca_uscita", "direzione": "EST"},
+            {"tipo": "rimuovi_oggetto", "oggetto": "mucchio_ossa"},
+            {"tipo": "messaggio", "testo": "Incrostri l'osso nel meccanismo. Uno spiraglio verso EST si apre!"}
+          ],
+          "errore": "Non puoi usare quello."
+        },
+        {
+          "comando": "inserisci",
+          "strumento": "braccio",
+          "condizioni":[],
+          "effetti":[
+            {"tipo": "messaggio", "testo": "💀 Infili il braccio. Una lama scatta e ti taglia la carotide."},
+            {"tipo": "muori"}
+          ],
+          "errore": ""
+        }
+      ]
+    },
+    {
+      "id": "cassetta_legno",
+      "nome": "Cassetta di legno",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "apri",
+          "strumento": "chiave_ottone",
+          "condizioni":[{"tipo": "ha_oggetto", "oggetto": "chiave_ottone"}],
+          "effetti":[
+            {"tipo": "rivela_oggetto", "oggetto": "provetta_vuota"},
+            {"tipo": "messaggio", "testo": "Apre la piccola cassa. All'interno c'è una Provetta vuota."}
+          ],
+          "errore": "È sigillata. La serratura è di ottone."
+        }
+      ]
+    },
+    {
+      "id": "provetta_vuota",
+      "nome": "Provetta Vuota",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "alambicco",
+      "nome": "Alambicco gocciolante",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "usa",
+          "strumento": "provetta_vuota",
+          "condizioni": [{"tipo": "ha_oggetto", "oggetto": "provetta_vuota"}],
+          "effetti":[
+            {"tipo": "rimuovi_oggetto", "oggetto": "provetta_vuota"},
+            {"tipo": "aggiungi_oggetto_inv", "oggetto": "provetta_fluido"},
+            {"tipo": "messaggio", "testo": "⚗ Raccogli il fluido blu nella provetta."}
+          ],
+          "errore": "Non hai contenitori adatti."
+        }
+      ]
+    },
+    {
+      "id": "provetta_fluido",
+      "nome": "Provetta con Fluido",
+      "raccoglibile": true,
+      "interazioni":[
+        {
+          "comando": "mescola",
+          "strumento": "borraccia",
+          "condizioni":[
+            {"tipo": "ha_oggetto", "oggetto": "borraccia"},
+            {"tipo": "variabile_maggiore_di", "nome": "borraccia_usi", "valore": 0}
+          ],
+          "effetti":[
+            {"tipo": "modifica_variabile", "nome": "borraccia_usi", "valore": -1},
+            {"tipo": "rimuovi_oggetto", "oggetto": "provetta_fluido"},
+            {"tipo": "aggiungi_oggetto_inv", "oggetto": "provetta_mista"},
+            {"tipo": "messaggio", "testo": "Diluisci il fluido con l'acqua. Ora la miscela è stabile e cristallina."}
+          ],
+          "errore": "La borraccia è vuota."
+        }
+      ]
+    },
+    {
+      "id": "provetta_mista",
+      "nome": "Provetta Mista",
+      "raccoglibile": true,
+      "interazioni":[]
+    },
+    {
+      "id": "apparato_prismatico",
+      "nome": "Apparato prismatico (foro)",
+      "raccoglibile": false,
+      "interazioni":[
+        {
+          "comando": "inserisci",
+          "strumento": "provetta_mista",
+          "condizioni": [{"tipo": "ha_oggetto", "oggetto": "provetta_mista"}],
+          "effetti":[
+            {"tipo": "set_flag", "nome": "provetta_inserita", "valore": true},
+            {"tipo": "rimuovi_oggetto", "oggetto": "provetta_mista"},
+            {"tipo": "messaggio", "testo": "Inserisci la provetta mista. Ora manca solo una fonte di luce per attivarla."}
+          ],
+          "errore": "La provetta non entra o non è pronta."
+        },
+        {
+          "comando": "usa",
+          "strumento": "lampada_olio",
+          "condizioni":[
+            {"tipo": "flag_vero", "nome": "provetta_inserita"}
+          ],
+          "effetti":[
+            {"tipo": "aggiungi_oggetto_inv", "oggetto": "provetta_attivata"},
+            {"tipo": "messaggio", "testo": "🔆 Posizioni la luce. Un raggio attraversa il prisma! Ottieni la PROVETTA ATTIVATA."}
+          ],
+          "errore": "Sembra inutile senza la provetta inserita o una fonte di luce."
+        }
+      ]
+    },
+    {
+      "id": "provetta_attivata",
+      "nome": "Provetta Attivata (Cura)",
+      "raccoglibile": true,
+      "interazioni": {
+		  
+	  }
+}]}
